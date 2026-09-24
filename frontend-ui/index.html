@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Đăng Ký Học Phần</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Đăng ký Học phần</h2>
+                <p>Kiến trúc Microservices</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="account-tab">Tài khoản</button>
+                <button class="nav-item" data-target="student-tab">Sinh viên</button>
+                <button class="nav-item" data-target="course-tab">Môn học</button>
+                <button class="nav-item" data-target="registration-tab">Đăng ký học phần</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-titles">
+                    <h1 id="page-title">Tài khoản</h1>
+                    <p id="page-subtitle">Đăng ký hoặc đăng nhập tài khoản để sử dụng hệ thống.</p>
+                </div>
+                <div class="login-status">
+                    <div class="status-box">
+                        <span id="status-text">Chưa đăng nhập</span>
+                        <span id="status-user">—</span>
+                    </div>
+                    <button id="logout-btn" class="btn btn-danger hidden">Đăng xuất</button>
+                </div>
+            </header>
+
+            <!-- Service Config -->
+            <div class="service-config">
+                <span class="config-label">Địa chỉ service:</span>
+                <div class="config-inputs">
+                    Auth <input type="text" id="port-auth" value="8081">
+                    Student <input type="text" id="port-student" value="8082">
+                    Course <input type="text" id="port-course" value="8083">
+                    Registration <input type="text" id="port-registration" value="8084">
+                </div>
+                <span class="config-note">(mặc định gọi thẳng vào từng service, không qua API Gateway)</span>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="account-tab" class="tab-content active">
+                <div class="grid-2">
+                    <div class="panel">
+                        <h3>Đăng ký tài khoản mới</h3>
+                        <form id="register-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tên đăng nhập</label>
+                                    <input type="text" id="reg-username" placeholder="vd: sv001" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu</label>
+                                    <input type="password" id="reg-password" placeholder="tối thiểu 6 ký tự" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Vai trò</label>
+                                    <select id="reg-role">
+                                        <option value="STUDENT">STUDENT</option>
+                                        <option value="ADMIN">ADMIN</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>ID sinh viên (nếu có)</label>
+                                    <input type="number" id="reg-student-id" placeholder="tùy chọn">
+                                </div>
+                                <div class="form-group btn-group-bottom">
+                                    <button type="submit" class="btn btn-primary">Đăng ký</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel">
+                        <h3>Đăng nhập</h3>
+                        <form id="login-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tên đăng nhập</label>
+                                    <input type="text" id="login-username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu</label>
+                                    <input type="password" id="login-password" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"></div>
+                                <div class="form-group"></div>
+                                <div class="form-group btn-group-bottom">
+                                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-tab" class="tab-content">
+                <div class="panel">
+                    <h3>Thêm sinh viên</h3>
+                    <form id="student-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mã SV</label>
+                                <input type="text" id="stu-code" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Họ tên</label>
+                                <input type="text" id="stu-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày sinh</label>
+                                <input type="date" id="stu-dob" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Giới tính</label>
+                                <select id="stu-gender">
+                                    <option value="NAM">NAM</option>
+                                    <option value="NU">NỮ</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="stu-email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>SĐT</label>
+                                <input type="text" id="stu-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Lớp</label>
+                                <input type="text" id="stu-class" required>
+                            </div>
+                            <div class="form-group btn-group-row">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <button type="button" id="stu-reset" class="btn btn-secondary">Làm mới</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel mt-20">
+                    <div class="panel-header">
+                        <h3>Danh sách sinh viên</h3>
+                        <div class="search-box">
+                            <label>Tìm kiếm</label>
+                            <div class="search-input-group">
+                                <input type="text" id="stu-search" placeholder="mã / họ tên">
+                                <button type="button" class="btn btn-secondary" onclick="fetchStudents()">Tìm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table" id="student-table">
+                        <thead>
+                            <tr>
+                                <th>Mã SV</th>
+                                <th>Họ tên</th>
+                                <th>Lớp</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="6" class="text-center">Chưa có sinh viên nào.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="course-tab" class="tab-content">
+                <div class="panel">
+                    <h3>Thêm môn học</h3>
+                    <form id="course-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mã môn</label>
+                                <input type="text" id="crs-code" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tên môn học</label>
+                                <input type="text" id="crs-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Số tín chỉ</label>
+                                <input type="number" id="crs-credits" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Số chỗ tối đa</label>
+                                <input type="number" id="crs-max-students" required>
+                            </div>
+                            <div class="form-group btn-group-row">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <button type="button" id="crs-reset" class="btn btn-secondary">Làm mới</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel mt-20">
+                    <div class="panel-header">
+                        <h3>Danh sách môn học</h3>
+                        <div class="search-box">
+                            <label>Tìm kiếm</label>
+                            <div class="search-input-group">
+                                <input type="text" id="crs-search" placeholder="mã / tên môn">
+                                <button type="button" class="btn btn-secondary" onclick="fetchCourses()">Tìm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table" id="course-table">
+                        <thead>
+                            <tr>
+                                <th>Mã môn</th>
+                                <th>Tên môn học</th>
+                                <th>Tín chỉ</th>
+                                <th>Chỗ còn lại</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4" class="text-center">Chưa có môn học nào.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="registration-tab" class="tab-content">
+                <div class="panel">
+                    <h3>Đăng ký học phần mới</h3>
+                    <form id="registration-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Sinh viên</label>
+                                <select id="reg-student-select" required>
+                                    <option value="">-- Chọn sinh viên --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Môn học</label>
+                                <select id="reg-course-select" required>
+                                    <option value="">-- Chọn môn học --</option>
+                                </select>
+                            </div>
+                            <div class="form-group btn-group-row">
+                                <button type="submit" class="btn btn-primary">Đăng ký</button>
+                                <button type="button" class="btn btn-secondary" onclick="loadDropdowns()">Tải lại danh sách</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel mt-20">
+                    <div class="panel-header">
+                        <h3>Danh sách đăng ký</h3>
+                        <div class="search-box">
+                            <label>Lọc theo sinh viên (ID)</label>
+                            <div class="search-input-group">
+                                <input type="text" id="reg-filter-student" placeholder="để trống = tất cả">
+                                <button type="button" class="btn btn-secondary" onclick="fetchRegistrations()">Xem</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table" id="registration-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Sinh viên</th>
+                                <th>Môn học</th>
+                                <th>Thời gian ĐK</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="5" class="text-center">Chưa có bản ghi đăng ký nào.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

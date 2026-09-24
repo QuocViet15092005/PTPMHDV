@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**, /users/**
+
+        - id: student-service
+          uri: lb://student-service
+          predicates:
+            - Path=/students/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN, STUDENT
+
+        - id: course-service
+          uri: lb://course-service
+          predicates:
+            - Path=/courses/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN, STUDENT
+
+        - id: registration-service
+          uri: lb://registration-service
+          predicates:
+            - Path=/registrations/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN, STUDENT
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
