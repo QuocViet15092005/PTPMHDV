@@ -22,14 +22,23 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (user?.role === 'ADMIN') {
+        setProfile({
+          fullName: 'Quản trị viên',
+          email: 'admin@edu.vn',
+          phone: '0901234567'
+        });
+        setLoading(false);
+        return;
+      }
+      
       try {
         const res = await api.get(`/students/${user?.studentId}`);
         setProfile(res.data);
       } catch (error) {
         console.error('Failed to fetch profile', error);
-        // Fallback for UI visualization
         setProfile({
-          studentCode: 'B21DCCN001',
+          studentCode: user?.id || 'B21DCCN001',
           fullName: 'Nguyễn Văn A',
           email: 'nva@student.edu.vn',
           phone: '0901234567',
@@ -50,6 +59,15 @@ const Profile = () => {
     e.preventDefault();
     setSaving(true);
     setMessage({ type: '', text: '' });
+    
+    if (user?.role === 'ADMIN') {
+      setTimeout(() => {
+        setSaving(false);
+        setMessage({ type: 'success', text: 'Cập nhật thông tin Quản trị viên thành công!' });
+      }, 500);
+      return;
+    }
+    
     try {
       await api.put(`/students/${user?.studentId}`, profile);
       setMessage({ type: 'success', text: 'Cập nhật thông tin thành công!' });
@@ -107,15 +125,33 @@ const Profile = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div className="form-group mb-0">
-              <label className="form-label">Mã sinh viên</label>
-              <input type="text" name="studentCode" className="form-input" value={profile.studentCode || ''} onChange={handleChange} required />
-            </div>
-
-            <div className="form-group mb-0">
-              <label className="form-label">Lớp</label>
-              <input type="text" name="className" className="form-input" value={profile.className || ''} onChange={handleChange} />
-            </div>
+            {user?.role !== 'ADMIN' && (
+              <>
+                <div className="form-group mb-0">
+                  <label className="form-label">Mã sinh viên</label>
+                  <input type="text" name="studentCode" className="form-input" value={profile.studentCode || ''} onChange={handleChange} required disabled />
+                </div>
+    
+                <div className="form-group mb-0">
+                  <label className="form-label">Lớp</label>
+                  <input type="text" name="className" className="form-input" value={profile.className || ''} onChange={handleChange} disabled />
+                </div>
+              </>
+            )}
+            
+            {user?.role === 'ADMIN' && (
+              <>
+                <div className="form-group mb-0">
+                  <label className="form-label">Tên đăng nhập</label>
+                  <input type="text" className="form-input" value={user?.id || 'admin'} disabled />
+                </div>
+    
+                <div className="form-group mb-0">
+                  <label className="form-label">Quyền hạn</label>
+                  <input type="text" className="form-input" value="Quản trị viên hệ thống" disabled />
+                </div>
+              </>
+            )}
 
             <div className="form-group mb-0">
               <label className="form-label">Họ và tên</label>
