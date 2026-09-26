@@ -32,4 +32,13 @@ public class CourseRequest {
     private Integer maxStudents;
 
     private Integer remainingSeats;
+
+    @Min(value = 2, message = "Thứ trong tuần bắt đầu từ 2 (Thứ 2)")
+    private Integer dayOfWeek;
+
+    @Min(value = 1, message = "Tiết bắt đầu hợp lệ từ 1")
+    private Integer startPeriod;
+
+    @Min(value = 1, message = "Tiết kết thúc hợp lệ từ 1")
+    private Integer endPeriod;
 }

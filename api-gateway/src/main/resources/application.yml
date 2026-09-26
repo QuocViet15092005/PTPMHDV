@@ -8,18 +8,27 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: false
           lower-case-service-id: true
       routes:
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/auth/**, /users/**
+            - Path=/auth/**
+
+        - id: user-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
 
         - id: student-service
           uri: lb://student-service
           predicates:
-            - Path=/students/**
+            - Path=/students/**,/news/**,/transactions/**
           filters:
             - name: AuthenticationFilter
               args:

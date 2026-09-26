@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/registrations")
 @RequiredArgsConstructor
 @Tag(name = "Registration Controller", description = "Các API Đăng ký và Hủy học phần (Tích hợp Microservices)")
-@CrossOrigin(origins = "*")
+
 public class RegistrationController {
 
     private final RegistrationService registrationService;

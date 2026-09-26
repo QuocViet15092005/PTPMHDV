@@ -56,6 +56,35 @@ public class RegistrationService {
             throw new BadRequestException("Sinh viên " + student.getFullName() + " đã đăng ký môn '" + course.getCourseName() + "' rồi!");
         }
 
+        List<RegistrationResponse> activeRegistrations = getRegistrationsByStudentId(request.getStudentId());
+
+        int totalCredits = course.getCredits() != null ? course.getCredits() : 0;
+        for (RegistrationResponse reg : activeRegistrations) {
+            if (reg.getCourse() != null && reg.getCourse().getCredits() != null) {
+                totalCredits += reg.getCourse().getCredits();
+            }
+        }
+
+        if (totalCredits > 24) {
+            throw new BadRequestException("Vượt quá số tín chỉ tối đa (24 tín chỉ). Tổng số tín chỉ nếu đăng ký sẽ là: " + totalCredits);
+        }
+
+        if (course.getDayOfWeek() != null && course.getStartPeriod() != null && course.getEndPeriod() != null) {
+            for (RegistrationResponse reg : activeRegistrations) {
+                CourseDTO registeredCourse = reg.getCourse();
+                if (registeredCourse != null && registeredCourse.getDayOfWeek() != null &&
+                        registeredCourse.getStartPeriod() != null && registeredCourse.getEndPeriod() != null) {
+
+                    if (course.getDayOfWeek().equals(registeredCourse.getDayOfWeek())) {
+                        if (!(course.getEndPeriod() < registeredCourse.getStartPeriod() ||
+                                course.getStartPeriod() > registeredCourse.getEndPeriod())) {
+                            throw new BadRequestException("Trùng lịch học với môn: " + registeredCourse.getCourseName());
+                        }
+                    }
+                }
+            }
+        }
+
         // 5. Lưu thông tin đăng ký vào database trước
         Registration registration = Registration.builder()
                 .studentId(request.getStudentId())
@@ -82,6 +111,7 @@ public class RegistrationService {
                 .courseId(saved.getCourseId())
                 .registeredAt(saved.getRegisteredAt())
                 .status(saved.getStatus())
+                .letterGrade(saved.getLetterGrade())
                 .student(student)
                 .course(updatedCourse)
                 .build();
@@ -121,6 +151,7 @@ public class RegistrationService {
                 .courseId(saved.getCourseId())
                 .registeredAt(saved.getRegisteredAt())
                 .status(saved.getStatus())
+                .letterGrade(saved.getLetterGrade())
                 .student(student)
                 .course(updatedCourse)
                 .build();
@@ -166,6 +197,7 @@ public class RegistrationService {
                 .courseId(registration.getCourseId())
                 .registeredAt(registration.getRegisteredAt())
                 .status(registration.getStatus())
+                .letterGrade(registration.getLetterGrade())
                 .student(student)
                 .course(course)
                 .build();
