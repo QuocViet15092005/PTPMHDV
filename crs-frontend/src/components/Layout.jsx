@@ -29,6 +29,7 @@ const Layout = () => {
     { path: '/admin/news', label: 'Quản lý Tin tức', icon: <Newspaper size={20} /> },
     { path: '/admin/courses', label: 'Quản lý Học phần', icon: <BookOpen size={20} /> },
     { path: '/admin/students', label: 'Quản lý Sinh viên', icon: <UserCircle size={20} /> },
+    { path: '/admin/finance', label: 'Quản lý Tài chính', icon: <Wallet size={20} /> },
   ] : [
     { path: '/dashboard', label: 'Trang chủ', icon: <Home size={20} /> },
     { path: '/news', label: 'Tin tức', icon: <Newspaper size={20} /> },
