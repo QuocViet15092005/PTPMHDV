@@ -20,6 +20,7 @@ public class RegistrationResponse {
     private Long courseId;
     private LocalDateTime registeredAt;
     private RegistrationStatus status;
+    private String letterGrade;
 
     // Chi tiết bổ sung được làm giàu từ các service khác (nếu có)
     private StudentDTO student;

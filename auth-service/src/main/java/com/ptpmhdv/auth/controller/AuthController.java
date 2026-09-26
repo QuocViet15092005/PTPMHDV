@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication Controller", description = "Các API xác thực và đăng ký tài khoản")
-@CrossOrigin(origins = "*")
+
 public class AuthController {
 
     private final AuthService authService;
+    private final com.ptpmhdv.auth.service.UserService userService;
 
     @PostMapping("/register")
     @Operation(summary = "Đăng ký tài khoản người dùng mới")
@@ -36,5 +37,12 @@ public class AuthController {
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(ApiResponse.ok("Đăng nhập thành công", response));
+    }
+
+    @PutMapping("/change-password")
+    @Operation(summary = "Đổi mật khẩu")
+    public ResponseEntity<ApiResponse<Void>> changePassword(@Valid @RequestBody com.ptpmhdv.auth.dto.ChangePasswordRequest request) {
+        userService.changePassword(request.getUsername(), request.getOldPassword(), request.getNewPassword());
+        return ResponseEntity.ok(ApiResponse.ok("Đổi mật khẩu thành công", null));
     }
 }

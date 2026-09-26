@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Tag(name = "User Management Controller", description = "Các API quản lý tài khoản người dùng")
-@CrossOrigin(origins = "*")
+
 public class UserController {
 
     private final UserService userService;

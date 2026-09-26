@@ -17,13 +17,12 @@ CREATE TABLE `users` (
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Sample Users (password: 123456 - raw or bcrypt hashed)
--- Note: AuthService handles raw and bcrypt matching cleanly.
+-- Sample Users (Đây chỉ là tài khoản mẫu có sẵn. Mật khẩu mặc định là 123456, đã được băm BCrypt)
 INSERT INTO `users` (`username`, `password`, `role`, `student_id`, `created_at`) VALUES
-('admin', '123456', 'ADMIN', NULL, NOW()),
-('sinhvien1', '123456', 'STUDENT', 1, NOW()),
-('sinhvien2', '123456', 'STUDENT', 2, NOW()),
-('sinhvien3', '123456', 'STUDENT', 3, NOW());
+('admin', '$2a$10$N8MTjcgoKrEfWc5nLNsxqOt/gyNyC7V9vVuj3UvczsHOL7u27RK22', 'ADMIN', NULL, NOW()),
+('sinhvien1', '$2a$10$N8MTjcgoKrEfWc5nLNsxqOt/gyNyC7V9vVuj3UvczsHOL7u27RK22', 'STUDENT', 1, NOW()),
+('sinhvien2', '$2a$10$N8MTjcgoKrEfWc5nLNsxqOt/gyNyC7V9vVuj3UvczsHOL7u27RK22', 'STUDENT', 2, NOW()),
+('sinhvien3', '$2a$10$N8MTjcgoKrEfWc5nLNsxqOt/gyNyC7V9vVuj3UvczsHOL7u27RK22', 'STUDENT', 3, NOW());
 
 
 -- 2. STUDENT SERVICE DATABASE (student_db)
@@ -62,16 +61,19 @@ CREATE TABLE `courses` (
     `course_name` VARCHAR(150) NOT NULL,
     `credits` INT NOT NULL,
     `max_students` INT NOT NULL,
-    `remaining_seats` INT NOT NULL
+    `remaining_seats` INT NOT NULL,
+    `day_of_week` INT NULL,
+    `start_period` INT NULL,
+    `end_period` INT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Sample Courses (Môn học và số chỗ ban đầu)
 -- Course 3 có 2 chỗ tối đa để phục vụ kịch bản demo hết chỗ
-INSERT INTO `courses` (`course_code`, `course_name`, `credits`, `max_students`, `remaining_seats`) VALUES
-('INT1332', 'Phát triển phần mềm hướng dịch vụ', 3, 40, 40),
-('INT1340', 'Kiến trúc máy tính', 3, 50, 50),
-('INT1408', 'Chuyên đề Công nghệ phần mềm', 2, 2, 2),
-('INT1306', 'Cấu trúc dữ liệu và giải thuật', 4, 60, 60);
+INSERT INTO `courses` (`course_code`, `course_name`, `credits`, `max_students`, `remaining_seats`, `day_of_week`, `start_period`, `end_period`) VALUES
+('INT1332', 'Phát triển phần mềm hướng dịch vụ', 3, 40, 40, 2, 2, 4),
+('INT1340', 'Kiến trúc máy tính', 3, 50, 50, 2, 3, 5),
+('INT1408', 'Chuyên đề Công nghệ phần mềm', 2, 2, 2, 3, 1, 3),
+('INT1306', 'Cấu trúc dữ liệu và giải thuật', 4, 60, 60, 4, 7, 10);
 
 
 -- 4. REGISTRATION SERVICE DATABASE (registration_db)

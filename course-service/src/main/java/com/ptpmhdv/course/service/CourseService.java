@@ -58,6 +58,9 @@ public class CourseService {
                 .credits(request.getCredits())
                 .maxStudents(request.getMaxStudents())
                 .remainingSeats(remaining)
+                .dayOfWeek(request.getDayOfWeek())
+                .startPeriod(request.getStartPeriod())
+                .endPeriod(request.getEndPeriod())
                 .build();
 
         Course saved = courseRepository.save(course);
@@ -84,6 +87,9 @@ public class CourseService {
             }
             course.setRemainingSeats(request.getRemainingSeats());
         }
+        course.setDayOfWeek(request.getDayOfWeek());
+        course.setStartPeriod(request.getStartPeriod());
+        course.setEndPeriod(request.getEndPeriod());
 
         Course updated = courseRepository.save(course);
         return mapToResponse(updated);
@@ -99,7 +105,7 @@ public class CourseService {
 
     @Transactional
     public CourseResponse reserveSeat(Long id) {
-        Course course = courseRepository.findById(id)
+        Course course = courseRepository.findByIdForUpdate(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy môn học với ID: " + id));
 
         if (course.getRemainingSeats() <= 0) {
@@ -133,6 +139,9 @@ public class CourseService {
                 .credits(course.getCredits())
                 .maxStudents(course.getMaxStudents())
                 .remainingSeats(course.getRemainingSeats())
+                .dayOfWeek(course.getDayOfWeek())
+                .startPeriod(course.getStartPeriod())
+                .endPeriod(course.getEndPeriod())
                 .build();
     }
 }

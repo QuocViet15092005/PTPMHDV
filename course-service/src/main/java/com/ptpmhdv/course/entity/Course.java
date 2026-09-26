@@ -32,4 +32,13 @@ public class Course {
 
     @Column(name = "remaining_seats", nullable = false)
     private Integer remainingSeats;
+
+    @Column(name = "day_of_week")
+    private Integer dayOfWeek;
+
+    @Column(name = "start_period")
+    private Integer startPeriod;
+
+    @Column(name = "end_period")
+    private Integer endPeriod;
 }

@@ -35,4 +35,7 @@ public class Registration {
     @Column(nullable = false, length = 20)
     @Builder.Default
     private RegistrationStatus status = RegistrationStatus.ACTIVE;
+    
+    @Column(name = "letter_grade", length = 5)
+    private String letterGrade;
 }

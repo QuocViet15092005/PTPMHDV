@@ -16,4 +16,7 @@ public class CourseDTO {
     private Integer credits;
     private Integer maxStudents;
     private Integer remainingSeats;
+    private Integer dayOfWeek;
+    private Integer startPeriod;
+    private Integer endPeriod;
 }
