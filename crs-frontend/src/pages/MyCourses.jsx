@@ -21,8 +21,8 @@ const MyCourses = () => {
       console.error('Failed to fetch my courses', error);
       // Mock data
       setRegistrations([
-        { id: 'R1', courseId: 'C002', course: { courseCode: 'INT102', courseName: 'Cấu trúc Dữ liệu', credits: 3 }, status: 'CONFIRMED', registeredAt: '2024-09-10T14:30:00' },
-        { id: 'R2', courseId: 'C003', course: { courseCode: 'INT201', courseName: 'Cơ sở dữ liệu', credits: 3 }, status: 'CONFIRMED', registeredAt: '2024-09-10T14:35:00' }
+        { id: 'R1', courseId: 'C002', course: { courseCode: 'INT102', courseName: 'Cấu trúc Dữ liệu', teacherName: 'Trần Thị Bình', credits: 3 }, status: 'CONFIRMED', registeredAt: '2024-09-10T14:30:00' },
+        { id: 'R2', courseId: 'C003', course: { courseCode: 'INT201', courseName: 'Cơ sở dữ liệu', teacherName: 'Lê Hoàng Cường', credits: 3 }, status: 'CONFIRMED', registeredAt: '2024-09-10T14:35:00' }
       ]);
     } finally {
       setLoading(false);
@@ -71,6 +71,7 @@ const MyCourses = () => {
             <tr>
               <th>Mã HP</th>
               <th>Tên học phần</th>
+              <th>Giáo viên</th>
               <th>Số TC</th>
               <th>Trạng thái</th>
               <th className="text-center">Thao tác</th>
@@ -86,6 +87,7 @@ const MyCourses = () => {
                 <tr key={reg.id}>
                   <td style={{ fontWeight: '500' }}>{reg.course?.courseCode}</td>
                   <td>{reg.course?.courseName}</td>
+                  <td>{reg.course?.teacherName || 'Chưa cập nhật'}</td>
                   <td>{reg.course?.credits}</td>
                   <td>
                     <span className="badge badge-success">Thành công</span>

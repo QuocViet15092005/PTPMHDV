@@ -13,6 +13,7 @@ public class CourseDTO {
     private Long id;
     private String courseCode;
     private String courseName;
+    private String teacherName;
     private Integer credits;
     private Integer maxStudents;
     private Integer remainingSeats;

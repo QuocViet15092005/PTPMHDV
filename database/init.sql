@@ -59,6 +59,7 @@ CREATE TABLE `courses` (
     `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
     `course_code` VARCHAR(20) NOT NULL UNIQUE,
     `course_name` VARCHAR(150) NOT NULL,
+    `teacher_name` VARCHAR(100) NULL,
     `credits` INT NOT NULL,
     `max_students` INT NOT NULL,
     `remaining_seats` INT NOT NULL,
@@ -69,11 +70,11 @@ CREATE TABLE `courses` (
 
 -- Sample Courses (Môn học và số chỗ ban đầu)
 -- Course 3 có 2 chỗ tối đa để phục vụ kịch bản demo hết chỗ
-INSERT INTO `courses` (`course_code`, `course_name`, `credits`, `max_students`, `remaining_seats`, `day_of_week`, `start_period`, `end_period`) VALUES
-('INT1332', 'Phát triển phần mềm hướng dịch vụ', 3, 40, 40, 2, 2, 4),
-('INT1340', 'Kiến trúc máy tính', 3, 50, 50, 2, 3, 5),
-('INT1408', 'Chuyên đề Công nghệ phần mềm', 2, 2, 2, 3, 1, 3),
-('INT1306', 'Cấu trúc dữ liệu và giải thuật', 4, 60, 60, 4, 7, 10);
+INSERT INTO `courses` (`course_code`, `course_name`, `teacher_name`, `credits`, `max_students`, `remaining_seats`, `day_of_week`, `start_period`, `end_period`) VALUES
+('INT1332', 'Phát triển phần mềm hướng dịch vụ', 'Nguyễn Văn An', 3, 40, 40, 2, 2, 4),
+('INT1340', 'Kiến trúc máy tính', 'Trần Thị Bình', 3, 50, 50, 2, 3, 5),
+('INT1408', 'Chuyên đề Công nghệ phần mềm', 'Lê Hoàng Cường', 2, 2, 2, 3, 1, 3),
+('INT1306', 'Cấu trúc dữ liệu và giải thuật', 'Phạm Minh Đức', 4, 60, 60, 4, 7, 10);
 
 
 -- 4. REGISTRATION SERVICE DATABASE (registration_db)

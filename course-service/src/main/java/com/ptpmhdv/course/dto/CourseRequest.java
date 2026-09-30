@@ -23,6 +23,10 @@ public class CourseRequest {
     @Size(max = 150, message = "Tên môn học không được vượt quá 150 ký tự")
     private String courseName;
 
+    @NotBlank(message = "Tên giáo viên không được để trống")
+    @Size(max = 100, message = "Tên giáo viên không được vượt quá 100 ký tự")
+    private String teacherName;
+
     @NotNull(message = "Số tín chỉ không được để trống")
     @Min(value = 1, message = "Số tín chỉ tối thiểu là 1")
     private Integer credits;

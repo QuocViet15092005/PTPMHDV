@@ -23,10 +23,10 @@ const Courses = () => {
       console.error('Failed to fetch courses', error);
       // Mock data for UI demonstration
       setCourses([
-        { id: 'C001', courseCode: 'INT101', courseName: 'Nhập môn Lập trình', credits: 3, remainingSeats: 0, maxStudents: 40 },
-        { id: 'C002', courseCode: 'INT102', courseName: 'Cấu trúc Dữ liệu', credits: 3, remainingSeats: 30, maxStudents: 45 },
-        { id: 'C003', courseCode: 'INT201', courseName: 'Cơ sở dữ liệu', credits: 3, remainingSeats: 15, maxStudents: 40 },
-        { id: 'C004', courseCode: 'INT301', courseName: 'Kiến trúc máy tính', credits: 4, remainingSeats: 0, maxStudents: 30 },
+        { id: 'C001', courseCode: 'INT101', courseName: 'Nhập môn Lập trình', teacherName: 'Nguyễn Văn An', credits: 3, remainingSeats: 0, maxStudents: 40 },
+        { id: 'C002', courseCode: 'INT102', courseName: 'Cấu trúc Dữ liệu', teacherName: 'Trần Thị Bình', credits: 3, remainingSeats: 30, maxStudents: 45 },
+        { id: 'C003', courseCode: 'INT201', courseName: 'Cơ sở dữ liệu', teacherName: 'Lê Hoàng Cường', credits: 3, remainingSeats: 15, maxStudents: 40 },
+        { id: 'C004', courseCode: 'INT301', courseName: 'Kiến trúc máy tính', teacherName: 'Phạm Minh Đức', credits: 4, remainingSeats: 0, maxStudents: 30 },
       ]);
     } finally {
       setLoading(false);
@@ -99,6 +99,7 @@ const Courses = () => {
             <tr>
               <th>Mã HP</th>
               <th>Tên học phần</th>
+              <th>Giáo viên</th>
               <th>Số TC</th>
               <th>Sĩ số</th>
               <th className="text-center">Thao tác</th>
@@ -116,6 +117,7 @@ const Courses = () => {
                   <tr key={course.id}>
                     <td style={{ fontWeight: '500' }}>{course.courseCode}</td>
                     <td>{course.courseName}</td>
+                    <td>{course.teacherName || 'Chưa cập nhật'}</td>
                     <td>{course.credits}</td>
                     <td>
                       <span className={`badge ${isFull ? 'badge-danger' : 'badge-success'}`}>

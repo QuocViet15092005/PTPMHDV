@@ -55,6 +55,7 @@ public class CourseService {
         Course course = Course.builder()
                 .courseCode(request.getCourseCode())
                 .courseName(request.getCourseName())
+                .teacherName(request.getTeacherName())
                 .credits(request.getCredits())
                 .maxStudents(request.getMaxStudents())
                 .remainingSeats(remaining)
@@ -79,6 +80,7 @@ public class CourseService {
 
         course.setCourseCode(request.getCourseCode());
         course.setCourseName(request.getCourseName());
+        course.setTeacherName(request.getTeacherName());
         course.setCredits(request.getCredits());
         course.setMaxStudents(request.getMaxStudents());
         if (request.getRemainingSeats() != null) {
@@ -136,6 +138,7 @@ public class CourseService {
                 .id(course.getId())
                 .courseCode(course.getCourseCode())
                 .courseName(course.getCourseName())
+                .teacherName(course.getTeacherName())
                 .credits(course.getCredits())
                 .maxStudents(course.getMaxStudents())
                 .remainingSeats(course.getRemainingSeats())

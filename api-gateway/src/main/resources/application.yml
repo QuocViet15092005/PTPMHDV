@@ -38,10 +38,21 @@ spring:
           uri: lb://course-service
           predicates:
             - Path=/courses/**
+            - Method=GET
           filters:
             - name: AuthenticationFilter
               args:
                 roles: ADMIN, STUDENT
+
+        - id: course-service-admin
+          uri: lb://course-service
+          predicates:
+            - Path=/courses/**
+            - Method=POST,PUT,PATCH,DELETE
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
 
         - id: registration-service
           uri: lb://registration-service

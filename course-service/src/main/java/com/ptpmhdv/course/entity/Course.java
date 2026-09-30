@@ -24,6 +24,9 @@ public class Course {
     @Column(name = "course_name", nullable = false, length = 150)
     private String courseName;
 
+    @Column(name = "teacher_name", length = 100)
+    private String teacherName;
+
     @Column(nullable = false)
     private Integer credits;
 
