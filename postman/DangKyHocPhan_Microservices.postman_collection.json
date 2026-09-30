@@ -1,0 +1,689 @@
+{
+	"info": {
+		"_postman_id": "9a6e19b5-4b9e-4b6e-a3d5-microservice-ptpmhdv",
+		"name": "Hệ Thống Đăng Ký Học Phần - Microservices (PTPMHDV)",
+		"description": "Postman Collection kiểm thử đầy đủ 4 Microservices: auth-service (8081), student-service (8082), course-service (8083), registration-service (8084).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Auth Service (Port 8081)",
+			"item": [
+				{
+					"name": "1.1 Đăng ký tài khoản (STUDENT)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"sv_test\",\n  \"password\": \"123456\",\n  \"role\": \"STUDENT\",\n  \"studentId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/register",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "register"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Đăng nhập (Lấy JWT Token)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"sv_test\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/login",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "login"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Danh sách người dùng (Quản trị)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{auth_url}}/users",
+							"host": ["{{auth_url}}"],
+							"path": ["users"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 Chi tiết người dùng theo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{auth_url}}/users/1",
+							"host": ["{{auth_url}}"],
+							"path": ["users", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Student Service (Port 8082)",
+			"item": [
+				{
+					"name": "2.1 Lấy danh sách tất cả sinh viên",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{student_url}}/students",
+							"host": ["{{student_url}}"],
+							"path": ["students"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Tìm kiếm sinh viên theo từ khóa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{student_url}}/students?keyword=An",
+							"host": ["{{student_url}}"],
+							"path": ["students"],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "An"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 Xem chi tiết sinh viên theo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{student_url}}/students/1",
+							"host": ["{{student_url}}"],
+							"path": ["students", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.4 Xem chi tiết sinh viên theo Mã SV",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{student_url}}/students/code/B21DCCN001",
+							"host": ["{{student_url}}"],
+							"path": ["students", "code", "B21DCCN001"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.5 Thêm mới một sinh viên",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentCode\": \"B21DCCN999\",\n  \"fullName\": \"Vũ Hoàng Nam\",\n  \"dateOfBirth\": \"2003-06-12\",\n  \"gender\": \"NAM\",\n  \"email\": \"nam.vu@ptit.edu.vn\",\n  \"phone\": \"0988776655\",\n  \"className\": \"D21CQCN01-N\",\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{student_url}}/students",
+							"host": ["{{student_url}}"],
+							"path": ["students"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.6 Cập nhật thông tin sinh viên",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentCode\": \"B21DCCN001\",\n  \"fullName\": \"Nguyễn Văn An (Đã cập nhật)\",\n  \"dateOfBirth\": \"2003-05-15\",\n  \"gender\": \"NAM\",\n  \"email\": \"an.nguyen@ptit.edu.vn\",\n  \"phone\": \"0912345678\",\n  \"className\": \"D21CQCN01-N\",\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{student_url}}/students/1",
+							"host": ["{{student_url}}"],
+							"path": ["students", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.7 Xóa sinh viên",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{student_url}}/students/5",
+							"host": ["{{student_url}}"],
+							"path": ["students", "5"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Course Service (Port 8083)",
+			"item": [
+				{
+					"name": "3.1 Lấy danh sách tất cả môn học",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{course_url}}/courses",
+							"host": ["{{course_url}}"],
+							"path": ["courses"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 Tìm kiếm môn học theo từ khóa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{course_url}}/courses?keyword=Dịch vụ",
+							"host": ["{{course_url}}"],
+							"path": ["courses"],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "Dịch vụ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 Xem chi tiết môn học theo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{course_url}}/courses/3",
+							"host": ["{{course_url}}"],
+							"path": ["courses", "3"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.4 Thêm mới môn học",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseCode\": \"INT1410\",\n  \"courseName\": \"Lập trình mạng và Phân tán\",\n  \"credits\": 3,\n  \"maxStudents\": 50,\n  \"remainingSeats\": 50\n}"
+						},
+						"url": {
+							"raw": "{{course_url}}/courses",
+							"host": ["{{course_url}}"],
+							"path": ["courses"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.5 Cập nhật môn học",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseCode\": \"INT1332\",\n  \"courseName\": \"Phát triển phần mềm hướng dịch vụ (Microservices)\",\n  \"credits\": 3,\n  \"maxStudents\": 45,\n  \"remainingSeats\": 45\n}"
+						},
+						"url": {
+							"raw": "{{course_url}}/courses/1",
+							"host": ["{{course_url}}"],
+							"path": ["courses", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.6 Giữ chỗ trực tiếp (Reserve Seat)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{course_url}}/courses/1/reserve-seat",
+							"host": ["{{course_url}}"],
+							"path": ["courses", "1", "reserve-seat"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.7 Hoàn trả chỗ trực tiếp (Release Seat)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{course_url}}/courses/1/release-seat",
+							"host": ["{{course_url}}"],
+							"path": ["courses", "1", "release-seat"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Registration Service (Port 8084) - Kịch bản Demo Tích hợp",
+			"item": [
+				{
+					"name": "4.1 Đăng ký học phần thành công (SV 1 đăng ký Môn 3)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 1,\n  \"courseId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 [Lỗi 400] Thử đăng ký trùng môn (SV 1 đăng ký lại Môn 3)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 1,\n  \"courseId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 [Lỗi 404] Đăng ký cho Sinh viên không tồn tại (SV 999)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 999,\n  \"courseId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 [Lỗi 404] Đăng ký cho Môn học không tồn tại (Môn 999)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 2,\n  \"courseId\": 999\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.5 Đăng ký học phần (SV 2 đăng ký Môn 3 -> Chỗ về 0)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 2,\n  \"courseId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.6 [Lỗi 400] Đăng ký khi Môn đã hết chỗ (SV 3 đăng ký Môn 3)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 3,\n  \"courseId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.7 Xem danh sách môn SV 1 đã đăng ký",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{registration_url}}/registrations/student/1",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations", "student", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.8 Xem tất cả các bản ghi đăng ký",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.9 Chi tiết bản ghi đăng ký theo ID (Kèm thông tin SV & Môn)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{registration_url}}/registrations/1",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.10 Hủy đăng ký học phần (SV 1 hủy Môn 3 -> Tự động hoàn lại 1 chỗ)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{registration_url}}/registrations/1",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.11 Đăng ký lại SV 3 cho Môn 3 (Thành công vì vừa có chỗ trống)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": 3,\n  \"courseId\": 3\n}"
+						},
+						"url": {
+							"raw": "{{registration_url}}/registrations",
+							"host": ["{{registration_url}}"],
+							"path": ["registrations"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Qua API Gateway (có JWT)",
+			"item": [
+				{
+					"name": "5.1 Đăng nhập (Lấy Token qua Gateway)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {",
+									"    var jsonData = pm.response.json();",
+									"    var token = jsonData.token || jsonData.accessToken || (jsonData.data && jsonData.data.token);",
+									"    if (token) {",
+									"        pm.collectionVariables.set(\"token\", token);",
+									"    }",
+									"} catch (e) {",
+									"    var tokenStr = pm.response.text();",
+									"    if (tokenStr) {",
+									"        pm.collectionVariables.set(\"token\", tokenStr);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"sv_test\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{gateway_url}}/auth/login",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 Lấy danh sách tất cả sinh viên (Qua Gateway)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/students",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 Lấy danh sách tất cả môn học (Qua Gateway)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/courses",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.4 Xem tất cả bản ghi đăng ký (Qua Gateway)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{gateway_url}}/registrations",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"registrations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "auth_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "student_url",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "course_url",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "registration_url",
+			"value": "http://localhost:8084",
+			"type": "string"
+		},
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
