@@ -8,6 +8,8 @@ import {
   GraduationCap, 
   BookOpen, 
   Calendar, 
+  CalendarDays,
+  Award,
   Wallet,
   LogOut,
   Search,
@@ -27,6 +29,8 @@ const Layout = () => {
   const navItems = user?.role === 'ADMIN' ? [
     { path: '/dashboard', label: 'Trang chủ', icon: <Home size={20} /> },
     { path: '/admin/news', label: 'Quản lý Tin tức', icon: <Newspaper size={20} /> },
+    { path: '/admin/exams', label: 'Quản lý Lịch thi', icon: <CalendarDays size={20} /> },
+    { path: '/admin/grades', label: 'Quản lý Điểm', icon: <Award size={20} /> },
     { path: '/admin/courses', label: 'Quản lý Học phần', icon: <BookOpen size={20} /> },
     { path: '/admin/students', label: 'Quản lý Sinh viên', icon: <UserCircle size={20} /> },
     { path: '/admin/finance', label: 'Quản lý Tài chính', icon: <Wallet size={20} /> },
@@ -37,6 +41,7 @@ const Layout = () => {
     { path: '/study', label: 'Góc học tập', icon: <GraduationCap size={20} /> },
     { path: '/courses', label: 'Đăng ký học phần', icon: <BookOpen size={20} /> },
     { path: '/my-courses', label: 'Học phần của tôi', icon: <BookOpen size={20} /> },
+    { path: '/exams', label: 'Lịch thi', icon: <CalendarDays size={20} /> },
     { path: '/schedule', label: 'Thời khóa biểu', icon: <Calendar size={20} /> },
     { path: '/finance', label: 'Tài chính', icon: <Wallet size={20} /> },
   ];

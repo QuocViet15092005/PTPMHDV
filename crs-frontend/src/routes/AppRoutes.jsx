@@ -18,6 +18,10 @@ import Finance from '../pages/Finance';
 
 import AdminNews from '../pages/admin/AdminNews';
 import AdminFinance from '../pages/admin/AdminFinance';
+import AdminExams from '../pages/admin/AdminExams';
+import AdminStudents from '../pages/admin/AdminStudents';
+import AdminGrades from '../pages/admin/AdminGrades';
+import Exams from '../pages/Exams';
 
 const PrivateRoute = ({ children, roles }) => {
   const { user, loading } = useAuth();
@@ -57,6 +61,7 @@ const AppRoutes = () => {
             <Schedule />
           </PrivateRoute>
         } />
+        <Route path="/exams" element={<PrivateRoute><Exams /></PrivateRoute>} />
         <Route path="/profile" element={
           <PrivateRoute>
             <Profile />
@@ -94,6 +99,9 @@ const AppRoutes = () => {
             <AdminFinance />
           </PrivateRoute>
         } />
+        <Route path="/admin/exams" element={<PrivateRoute roles={['ADMIN']}><AdminExams /></PrivateRoute>} />
+        <Route path="/admin/students" element={<PrivateRoute roles={['ADMIN']}><AdminStudents /></PrivateRoute>} />
+        <Route path="/admin/grades" element={<PrivateRoute roles={['ADMIN']}><AdminGrades /></PrivateRoute>} />
         
         {/* Fallback */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

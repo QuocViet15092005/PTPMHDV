@@ -6,6 +6,7 @@ import { Trash2, AlertCircle } from 'lucide-react';
 const MyCourses = () => {
   const { user } = useAuth();
   const [registrations, setRegistrations] = useState([]);
+  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionStatus, setActionStatus] = useState({ type: '', message: '' });
 
@@ -17,6 +18,12 @@ const MyCourses = () => {
     try {
       const res = await api.get(`/registrations/student/${user?.studentId}`);
       setRegistrations(res.data);
+      try {
+        const historyRes = await api.get(`/registrations/student/${user?.studentId}/history`);
+        setHistory(historyRes.data.filter(item => item.status === 'CANCELLED').sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt)));
+      } catch (historyError) {
+        console.error('Failed to fetch registration history', historyError);
+      }
     } catch (error) {
       console.error('Failed to fetch my courses', error);
       // Mock data
@@ -103,6 +110,17 @@ const MyCourses = () => {
               ))
             )}
           </tbody>
+        </table>
+      </div>
+
+      <div className="surface mt-6 table-wrapper">
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 'bold', padding: '1rem 1rem 0' }}>Lịch sử học phần đã hủy</h2>
+        <table className="table">
+          <thead><tr><th>Mã học phần</th><th>Tên học phần</th><th>Học kỳ</th><th>Ngày đăng ký</th><th>Trạng thái</th></tr></thead>
+          <tbody>{history.length === 0 ? <tr><td colSpan="5" className="text-center text-muted py-6">Chưa có học phần đã hủy.</td></tr> : history.map(item => <tr key={item.id}>
+            <td>{item.course?.courseCode || '—'}</td><td>{item.course?.courseName || 'Học phần không còn trong danh mục'}</td><td>{item.course?.semester || 'Chưa xếp học kỳ'}</td>
+            <td>{item.registeredAt ? new Date(item.registeredAt).toLocaleString('vi-VN') : '—'}</td><td><span className="badge badge-danger">Đã hủy</span></td>
+          </tr>)}</tbody>
         </table>
       </div>
     </div>

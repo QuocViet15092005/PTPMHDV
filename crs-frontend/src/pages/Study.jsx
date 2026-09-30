@@ -26,7 +26,9 @@ const Study = () => {
     fetchStudyData();
   }, [user]);
 
-  const totalCredits = registrations.reduce((sum, r) => sum + (r.course?.credits || 0), 0);
+  const totalCredits = registrations
+    .filter(r => r.letterGrade && r.letterGrade !== 'F')
+    .reduce((sum, r) => sum + (r.course?.credits || 0), 0);
   
   // Calculate mock GPA based on letterGrade if available
   const calculateGPA = () => {
@@ -52,6 +54,12 @@ const Study = () => {
   };
 
   if (loading) return <div className="text-center py-8">Đang tải...</div>;
+
+  const semesterGroups = registrations.reduce((groups, registration) => {
+    const semester = registration.course?.semester || 'Chưa xếp học kỳ';
+    (groups[semester] ||= []).push(registration);
+    return groups;
+  }, {});
 
   return (
     <div className="animate-fade-in">
@@ -148,6 +156,25 @@ const Study = () => {
               )).slice(0, 4) // Show up to 4 items
             )}
           </div>
+        </div>
+      </div>
+
+      <div className="dash-panel mt-6">
+        <div className="dash-panel-header">BẢNG ĐIỂM THEO HỌC KỲ</div>
+        <div className="dash-panel-content p-0" style={{ padding: 0, overflowX: 'auto' }}>
+          <table className="table">
+            <thead><tr><th>Mã học phần</th><th>Học phần</th><th>Học kỳ</th><th style={{ textAlign: 'center' }}>Số TC</th><th style={{ textAlign: 'center' }}>Điểm hệ 10</th><th style={{ textAlign: 'center' }}>Điểm chữ</th></tr></thead>
+            <tbody>{registrations.length === 0 ? <tr><td colSpan="6" className="text-center py-4 text-muted">Chưa có đăng ký học phần</td></tr> :
+              Object.entries(semesterGroups).map(([semester, courses]) => <React.Fragment key={semester}>
+                <tr><td colSpan="6" style={{ fontWeight: 700, background: 'var(--background)' }}>{semester}</td></tr>
+                {courses.map(registration => <tr key={registration.id}>
+                  <td>{registration.course?.courseCode || '—'}</td><td>{registration.course?.courseName || 'Học phần không còn trong danh mục'}</td><td>{semester}</td>
+                  <td style={{ textAlign: 'center' }}>{registration.course?.credits ?? '—'}</td>
+                  <td style={{ textAlign: 'center' }}>{registration.numericScore ?? '—'}</td>
+                  <td style={{ textAlign: 'center', fontWeight: 600, color: registration.letterGrade ? '#10b981' : 'var(--text-muted)' }}>{registration.letterGrade || 'Chưa có điểm'}</td>
+                </tr>)}
+              </React.Fragment>)}</tbody>
+          </table>
         </div>
       </div>
     </div>

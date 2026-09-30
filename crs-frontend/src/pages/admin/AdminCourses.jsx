@@ -9,6 +9,7 @@ const AdminCourses = () => {
   const [formData, setFormData] = useState({
     courseCode: '',
     courseName: '',
+    semester: '',
     credits: 3,
     maxStudents: 40,
     dayOfWeek: 2,
@@ -39,6 +40,7 @@ const AdminCourses = () => {
     setFormData({
       courseCode: '',
       courseName: '',
+      semester: '',
       credits: 3,
       maxStudents: 40,
       dayOfWeek: 2,
@@ -53,6 +55,7 @@ const AdminCourses = () => {
     setFormData({
       courseCode: course.courseCode,
       courseName: course.courseName,
+      semester: course.semester || '',
       credits: course.credits,
       maxStudents: course.maxStudents,
       dayOfWeek: course.dayOfWeek,
@@ -107,6 +110,7 @@ const AdminCourses = () => {
             <tr>
               <th>Mã HP</th>
               <th>Tên học phần</th>
+              <th>Học kỳ</th>
               <th>Số TC</th>
               <th>Sĩ số</th>
               <th>Thời gian (Thứ-Tiết)</th>
@@ -115,14 +119,15 @@ const AdminCourses = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" className="text-center py-8">Đang tải...</td></tr>
+              <tr><td colSpan="7" className="text-center py-8">Đang tải...</td></tr>
             ) : courses.length === 0 ? (
-              <tr><td colSpan="6" className="text-center py-8">Không có dữ liệu</td></tr>
+              <tr><td colSpan="7" className="text-center py-8">Không có dữ liệu</td></tr>
             ) : (
               courses.map(course => (
                 <tr key={course.id}>
                   <td style={{ fontWeight: '500' }}>{course.courseCode}</td>
                   <td>{course.courseName}</td>
+                  <td>{course.semester || 'Chưa xếp học kỳ'}</td>
                   <td>{course.credits}</td>
                   <td>{course.maxStudents - course.remainingSeats} / {course.maxStudents}</td>
                   <td>Thứ {course.dayOfWeek}, Tiết {course.startPeriod}-{course.endPeriod}</td>
@@ -160,6 +165,10 @@ const AdminCourses = () => {
                 <div className="form-group">
                   <label className="form-label">Tên học phần</label>
                   <input type="text" className="form-input" value={formData.courseName} onChange={e => setFormData({...formData, courseName: e.target.value})} required />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Học kỳ (ví dụ: HK1 2026-2027)</label>
+                  <input type="text" className="form-input" value={formData.semester} onChange={e => setFormData({...formData, semester: e.target.value})} placeholder="HK1 2026-2027" />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Số tín chỉ</label>
