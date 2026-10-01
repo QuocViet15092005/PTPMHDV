@@ -36,3 +36,6 @@ Thumbs.db
 ### Node & Frontend ###
 node_modules/
 frontend-ui/dist/
+
+### Local backups (DB dumps, khong commit) ###
+backup/

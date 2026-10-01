@@ -115,9 +115,7 @@ const AdminCourses = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" className="text-center py-8">Đang tải...</td></tr>
             ) : courses.length === 0 ? (
-              <tr><td colSpan="6" className="text-center py-8">Không có dữ liệu</td></tr>
             ) : (
               courses.map(course => (
                 <tr key={course.id}>

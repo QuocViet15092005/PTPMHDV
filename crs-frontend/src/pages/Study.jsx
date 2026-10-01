@@ -26,7 +26,6 @@ const Study = () => {
     fetchStudyData();
   }, [user]);
 
-  const totalCredits = registrations.reduce((sum, r) => sum + (r.course?.credits || 0), 0);
   
   // Calculate mock GPA based on letterGrade if available
   const calculateGPA = () => {
