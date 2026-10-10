@@ -25,19 +25,51 @@ spring:
               args:
                 roles: ADMIN
 
-        - id: student-service
+        - id: student-service-admin-get
+          uri: lb://student-service
+          predicates:
+            - Path=/students
+            - Method=GET
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
+
+        - id: student-service-admin-modify
           uri: lb://student-service
           predicates:
             - Path=/students/**,/news/**,/transactions/**
+            - Method=POST,PUT,DELETE
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
+
+        - id: student-service-shared
+          uri: lb://student-service
+          predicates:
+            - Path=/students/**,/news/**,/transactions/**
+            - Method=GET
           filters:
             - name: AuthenticationFilter
               args:
                 roles: ADMIN, STUDENT
 
-        - id: course-service
+        - id: course-service-admin
           uri: lb://course-service
           predicates:
             - Path=/courses/**
+            - Method=POST,PUT,DELETE
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
+
+        - id: course-service-shared
+          uri: lb://course-service
+          predicates:
+            - Path=/courses/**
+            - Method=GET
           filters:
             - name: AuthenticationFilter
               args:

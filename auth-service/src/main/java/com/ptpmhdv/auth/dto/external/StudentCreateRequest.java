@@ -13,4 +13,6 @@ public class StudentCreateRequest {
     private String studentCode;
     private String fullName;
     private String email;
+    private String phone;
+    private String className;
 }

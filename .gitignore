@@ -36,3 +36,7 @@ Thumbs.db
 ### Node & Frontend ###
 node_modules/
 frontend-ui/dist/
+
+# Frontend build output and local preview
+crs-frontend/dist/
+crs-frontend/preview-*.jpg

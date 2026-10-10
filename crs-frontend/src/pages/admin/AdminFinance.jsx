@@ -187,7 +187,11 @@ const AdminFinance = () => {
                         </div>
                       </div>
 
-                      {stats.debt > 0 ? (
+                      {stats.totalCredits === 0 ? (
+                        <div className="mb-6 p-4 rounded-lg bg-black/20 border border-dashed border-[var(--border)] text-muted flex items-center justify-center gap-2 font-medium">
+                          Sinh viên {selectedStudent?.fullName} chưa đăng ký học phần nào.
+                        </div>
+                      ) : stats.debt > 0 ? (
                         <div className="mb-6 p-4 rounded-lg border border-primary/30" style={{ background: 'rgba(59, 130, 246, 0.05)' }}>
                           <h3 style={{ fontWeight: 600, marginBottom: '1rem' }}>Thêm giao dịch thanh toán</h3>
                           <div className="flex gap-3">

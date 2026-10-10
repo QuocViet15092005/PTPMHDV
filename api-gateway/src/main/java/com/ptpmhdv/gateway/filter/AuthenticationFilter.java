@@ -57,8 +57,14 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 // Mutate request to add user details to headers for downstream services
                 String username = jwtUtil.extractUsername(authHeader);
                 exchange = exchange.mutate()
-                        .request(builder -> builder.header("X-Auth-Username", username)
-                                .header("X-Auth-Role", role))
+                        .request(builder -> {
+                            builder.headers(headers -> {
+                                headers.remove("X-Auth-Username");
+                                headers.remove("X-Auth-Role");
+                            });
+                            builder.header("X-Auth-Username", username);
+                            builder.header("X-Auth-Role", role);
+                        })
                         .build();
 
             } catch (Exception e) {

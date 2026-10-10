@@ -31,12 +31,12 @@ const Schedule = () => {
         setLoading(true);
         const res = await api.get(`/registrations/student/${user.studentId}`);
         const mappedData = res.data.map(reg => {
-          const c = reg.course;
+          const c = reg.course || {};
           return {
-            day: c.dayOfWeek - 2, // Backend dayOfWeek (2-7) to frontend dayIndex (0-5)
-            startPeriod: c.startPeriod,
-            endPeriod: c.endPeriod,
-            course: `${c.courseCode} - ${c.courseName}`,
+            day: (c.dayOfWeek || 2) - 2, // Backend dayOfWeek (2-7) to frontend dayIndex (0-5)
+            startPeriod: c.startPeriod || 0,
+            endPeriod: c.endPeriod || 0,
+            course: `${c.courseCode || 'N/A'} - ${c.courseName || 'N/A'}`,
             room: 'TBD' // Add real room field if available in DB
           };
         });

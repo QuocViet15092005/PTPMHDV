@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +29,9 @@ public class StudentClient {
      * (ví dụ studentCode đã tồn tại) để AuthService bên trên xử lý rollback.
      */
     public StudentResponseDTO createStudent(StudentCreateRequest request) {
-        HttpEntity<StudentCreateRequest> entity = new HttpEntity<>(request);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Auth-Role", "ADMIN");
+        HttpEntity<StudentCreateRequest> entity = new HttpEntity<>(request, headers);
 
         var response = restTemplate.exchange(
                 studentServiceUrl + "/students",

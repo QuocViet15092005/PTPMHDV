@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LogIn } from 'lucide-react';
+import AuthShell from '../components/AuthShell';
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -33,8 +34,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center" style={{ minHeight: '80vh' }}>
-      <div className="surface" style={{ padding: '2.5rem', width: '100%', maxWidth: '400px' }}>
+    <AuthShell>
+      <div className="surface auth-form">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4 text-primary">
             <LogIn size={48} />
@@ -82,7 +83,7 @@ const Login = () => {
           <Link to="/register" className="text-primary" style={{ fontWeight: '500' }}>Đăng ký ngay</Link>
         </div>
       </div>
-    </div>
+    </AuthShell>
   );
 };
 
