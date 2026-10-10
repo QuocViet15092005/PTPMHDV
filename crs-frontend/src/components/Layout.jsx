@@ -33,7 +33,7 @@ const Layout = () => {
   ] : [
     { path: '/dashboard', label: 'Trang chủ', icon: <Home size={20} /> },
     { path: '/news', label: 'Tin tức', icon: <Newspaper size={20} /> },
-    { path: '/profile', label: 'Profile', icon: <UserCircle size={20} /> },
+    { path: '/profile', label: 'Thông tin cá nhân', icon: <UserCircle size={20} /> },
     { path: '/study', label: 'Góc học tập', icon: <GraduationCap size={20} /> },
     { path: '/courses', label: 'Đăng ký học phần', icon: <BookOpen size={20} /> },
     { path: '/my-courses', label: 'Học phần của tôi', icon: <BookOpen size={20} /> },
@@ -46,14 +46,15 @@ const Layout = () => {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <BookOpen className="text-primary" size={28} />
-          <span>EduPortal</span>
+          <img className="sidebar-school-logo" src="/hunre-logo.png" alt="Logo HUNRE" />
+          <span>EduPortal<small>CỔNG THÔNG TIN SINH VIÊN</small></span>
         </div>
         <nav className="sidebar-nav">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
+              aria-current={location.pathname === item.path ? 'page' : undefined}
               className={`sidebar-item ${location.pathname === item.path ? 'active' : ''}`}
             >
               {item.icon}

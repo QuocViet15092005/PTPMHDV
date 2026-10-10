@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { UserPlus } from 'lucide-react';
+import AuthShell from '../components/AuthShell';
 
 const Register = () => {
   const [formData, setFormData] = useState({ 
@@ -9,7 +10,9 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    fullName: ''
+    fullName: '',
+    className: '',
+    phone: ''
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +35,9 @@ const Register = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        fullName: formData.fullName
+        fullName: formData.fullName,
+        className: formData.className,
+        phone: formData.phone
       });
       navigate('/login');
     } catch (err) {
@@ -43,8 +48,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center" style={{ minHeight: '80vh', padding: '2rem 0' }}>
-      <div className="surface" style={{ padding: '2.5rem', width: '100%', maxWidth: '450px' }}>
+    <AuthShell>
+      <div className="surface auth-form auth-form-register">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4 text-primary">
             <UserPlus size={48} />
@@ -56,64 +61,92 @@ const Register = () => {
         {error && <div className="badge badge-danger w-full mb-4" style={{ padding: '0.75rem', borderRadius: '8px' }}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Mã Sinh Viên (Tên đăng nhập)</label>
-            <input
-              type="text"
-              name="username"
-              className="form-input"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="form-group mb-0">
+              <label className="form-label">Mã Sinh Viên (Tên đăng nhập)</label>
+              <input
+                type="text"
+                name="username"
+                className="form-input"
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-0">
+              <label className="form-label">Lớp</label>
+              <input
+                type="text"
+                name="className"
+                className="form-input"
+                value={formData.className}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group mb-0">
+              <label className="form-label">Họ và tên</label>
+              <input
+                type="text"
+                name="fullName"
+                className="form-input"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            
+            <div className="form-group mb-0">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                className="form-input"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-0">
+              <label className="form-label">Số điện thoại</label>
+              <input
+                type="text"
+                name="phone"
+                className="form-input"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Họ và tên</label>
-            <input
-              type="text"
-              name="fullName"
-              className="form-input"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Email</label>
-            <input
-              type="email"
-              name="email"
-              className="form-input"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '1.5rem 0' }}></div>
 
-          <div className="form-group">
-            <label className="form-label">Mật khẩu</label>
-            <input
-              type="password"
-              name="password"
-              className="form-input"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="form-group mb-0">
+              <label className="form-label">Mật khẩu</label>
+              <input
+                type="password"
+                name="password"
+                className="form-input"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="form-group mb-8">
-            <label className="form-label">Xác nhận mật khẩu</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              className="form-input"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
+            <div className="form-group mb-0">
+              <label className="form-label">Xác nhận mật khẩu</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                className="form-input"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
           <button type="submit" className="btn btn-primary w-full justify-center" disabled={isLoading}>
@@ -126,7 +159,7 @@ const Register = () => {
           <Link to="/login" className="text-primary" style={{ fontWeight: '500' }}>Đăng nhập</Link>
         </div>
       </div>
-    </div>
+    </AuthShell>
   );
 };
 

@@ -44,6 +44,8 @@ public class AuthService {
                             .studentCode(request.getUsername())
                             .fullName(request.getFullName())
                             .email(request.getEmail())
+                            .phone(request.getPhone())
+                            .className(request.getClassName())
                             .build()
             );
             studentId = student.getId();

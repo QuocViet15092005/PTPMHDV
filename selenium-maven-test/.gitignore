@@ -1,5 +1,6 @@
+HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -23,20 +24,10 @@ target/
 /nbbuild/
 /dist/
 /nbdist/
-/.built-jar-path
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
-
-### Logs & OS files ###
-*.log
-.DS_Store
-Thumbs.db
-
-### Node & Frontend ###
-node_modules/
-frontend-ui/dist/
-
-# Frontend build output and local preview
-crs-frontend/dist/
-crs-frontend/preview-*.jpg
