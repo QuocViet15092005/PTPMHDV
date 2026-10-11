@@ -26,8 +26,10 @@ public class RegistrationController {
     @PostMapping
     @Operation(summary = "Đăng ký học phần cho sinh viên (Tự động kiểm tra SV, Môn học, Chỗ trống và trừ chỗ)")
     public ResponseEntity<ApiResponse<RegistrationResponse>> registerCourse(
+            @RequestHeader("X-Auth-Role") String role,
+            @RequestHeader("X-Auth-Username") String username,
             @Valid @RequestBody RegistrationRequest request) {
-        RegistrationResponse response = registrationService.registerCourse(request);
+        RegistrationResponse response = registrationService.registerCourse(request, role, username);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.ok("Đăng ký học phần thành công", response));
     }

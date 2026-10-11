@@ -29,11 +29,11 @@ public class RegistrationService {
     private final CourseClient courseClient;
 
     @Transactional
-    public RegistrationResponse registerCourse(RegistrationRequest request) {
+    public RegistrationResponse registerCourse(RegistrationRequest request, String role, String username) {
         log.info("Bắt đầu xử lý đăng ký học phần: Student ID={}, Course ID={}", request.getStudentId(), request.getCourseId());
 
         // 1. Gọi Student Service để xác nhận sinh viên tồn tại
-        StudentDTO student = studentClient.getStudentById(request.getStudentId());
+        StudentDTO student = studentClient.getStudentById(request.getStudentId(), role, username);
         log.info("Xác thực sinh viên thành công: {} ({})", student.getFullName(), student.getStudentCode());
 
         // 2. Gọi Course Service để xác nhận môn học tồn tại

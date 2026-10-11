@@ -11,6 +11,9 @@ import com.ptpmhdv.registration.exception.ServiceUnavailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -29,10 +32,27 @@ public class StudentClient {
     private String studentServiceUrl;
 
     public StudentDTO getStudentById(Long studentId) {
+        return getStudentById(studentId, null, null);
+    }
+
+    public StudentDTO getStudentById(Long studentId, String role, String username) {
         String url = studentServiceUrl + "/students/" + studentId;
         try {
             log.info("Gọi sang Student Service: GET {}", url);
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            HttpHeaders headers = new HttpHeaders();
+            if (role != null && !role.isBlank()) {
+                headers.set("X-Auth-Role", role);
+            }
+            if (username != null && !username.isBlank()) {
+                headers.set("X-Auth-Username", username);
+            }
+            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    requestEntity,
+                    String.class
+            );
 
             if (response.getBody() == null) {
                 throw new ResourceNotFoundException("Không tìm thấy sinh viên với ID: " + studentId);
