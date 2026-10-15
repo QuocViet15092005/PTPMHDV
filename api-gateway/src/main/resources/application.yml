@@ -75,6 +75,26 @@ spring:
               args:
                 roles: ADMIN, STUDENT
 
+        - id: registration-grades-list-admin
+          uri: lb://registration-service
+          predicates:
+            - Path=/registrations/grades
+            - Method=GET
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
+
+        - id: registration-grades-admin
+          uri: lb://registration-service
+          predicates:
+            - Path=/registrations/*/grade
+            - Method=PUT
+          filters:
+            - name: AuthenticationFilter
+              args:
+                roles: ADMIN
+
         - id: registration-service
           uri: lb://registration-service
           predicates:

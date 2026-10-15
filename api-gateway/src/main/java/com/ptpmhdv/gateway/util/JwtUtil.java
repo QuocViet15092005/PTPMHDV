@@ -28,6 +28,13 @@ public class JwtUtil {
         return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
+    public Long extractStudentId(String token) {
+        return extractClaim(token, claims -> {
+            Object value = claims.get("studentId");
+            return value instanceof Number ? ((Number) value).longValue() : null;
+        });
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);

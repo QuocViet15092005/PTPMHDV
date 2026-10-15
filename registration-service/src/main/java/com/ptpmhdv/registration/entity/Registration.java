@@ -38,4 +38,7 @@ public class Registration {
     
     @Column(name = "letter_grade", length = 5)
     private String letterGrade;
+
+    @Column(name = "score", precision = 3, scale = 1)
+    private java.math.BigDecimal score;
 }

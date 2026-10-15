@@ -96,6 +96,10 @@ const Dashboard = () => {
         
         {user?.role === 'ADMIN' ? (
           <>
+            <div className="dash-card" onClick={() => navigate('/admin/grades')}>
+              <div className="dash-icon-box" style={{ background: '#7c3aed', color: 'white' }}><GraduationCap size={24} /></div>
+              <div><div className="text-muted" style={{ fontSize: '0.75rem', fontWeight: 600 }}>KẾT QUẢ HỌC TẬP</div><div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Quản lý Điểm</div></div>
+            </div>
             <div className="dash-card" onClick={() => navigate('/admin/courses')}>
               <div className="dash-icon-box" style={{ background: 'var(--primary)', color: 'white' }}>
                 <BookOpen size={24} />

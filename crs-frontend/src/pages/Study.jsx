@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { GraduationCap, BookOpen, Award, FileText, ChevronRight } from 'lucide-react';
 import api from '../api/axios';
 import { useAuth } from '../contexts/AuthContext';
+import { summarizeGrades } from '../utils/grades';
 
 const Study = () => {
   const { user } = useAuth();
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchStudyData = async () => {
+      setLoading(true);
+      setError('');
+      setRegistrations([]);
       if (!user?.studentId) {
         setLoading(false);
         return;
@@ -18,7 +23,7 @@ const Study = () => {
         const res = await api.get(`/registrations/student/${user.studentId}`);
         setRegistrations(res.data);
       } catch (error) {
-        console.error('Failed to fetch study data', error);
+        setError(error.response?.data?.message || 'Không tải được kết quả học tập. Vui lòng tải lại trang.');
       } finally {
         setLoading(false);
       }
@@ -26,32 +31,10 @@ const Study = () => {
     fetchStudyData();
   }, [user]);
 
-  const totalCredits = registrations.reduce((sum, r) => sum + (r.course?.credits || 0), 0);
-  
-  // Calculate mock GPA based on letterGrade if available
-  const calculateGPA = () => {
-    if (registrations.length === 0) return "0.0";
-    let totalPoints = 0;
-    let gradedCredits = 0;
-    
-    registrations.forEach(r => {
-      if (r.letterGrade && r.course?.credits) {
-        gradedCredits += r.course.credits;
-        if (r.letterGrade === 'A') totalPoints += 4.0 * r.course.credits;
-        else if (r.letterGrade === 'B+') totalPoints += 3.5 * r.course.credits;
-        else if (r.letterGrade === 'B') totalPoints += 3.0 * r.course.credits;
-        else if (r.letterGrade === 'C+') totalPoints += 2.5 * r.course.credits;
-        else if (r.letterGrade === 'C') totalPoints += 2.0 * r.course.credits;
-        else if (r.letterGrade === 'D+') totalPoints += 1.5 * r.course.credits;
-        else if (r.letterGrade === 'D') totalPoints += 1.0 * r.course.credits;
-      }
-    });
-    
-    if (gradedCredits === 0) return "Chưa có";
-    return (totalPoints / gradedCredits).toFixed(2);
-  };
+  const { earnedCredits, gpa } = summarizeGrades(registrations);
 
   if (loading) return <div className="text-center py-8">Đang tải...</div>;
+  if (error) return <div role="alert" className="surface p-6" style={{ padding: '1.5rem', color: '#b91c1c' }}>{error}</div>;
 
   return (
     <div className="animate-fade-in">
@@ -72,7 +55,7 @@ const Study = () => {
           </div>
           <div>
             <div className="text-muted" style={{ fontSize: '0.875rem' }}>Điểm trung bình (GPA)</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{calculateGPA()} {calculateGPA() !== "Chưa có" && "/ 4.0"}</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{gpa} {gpa !== 'Chưa có' && '/ 4.0'}</div>
           </div>
         </div>
 
@@ -82,7 +65,7 @@ const Study = () => {
           </div>
           <div>
             <div className="text-muted" style={{ fontSize: '0.875rem' }}>Số tín chỉ tích lũy</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{totalCredits} TC</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{earnedCredits} TC</div>
           </div>
         </div>
 
@@ -106,20 +89,24 @@ const Study = () => {
                 <tr>
                   <th>Môn học</th>
                   <th style={{ textAlign: 'center' }}>Số TC</th>
+                  <th style={{ textAlign: 'center' }}>Điểm hệ 10</th>
                   <th style={{ textAlign: 'center' }}>Điểm chữ</th>
+                  <th style={{ textAlign: 'center' }}>Điểm hệ 4</th>
                 </tr>
               </thead>
               <tbody>
                 {registrations.length === 0 ? (
-                  <tr><td colSpan="3" className="text-center py-4 text-muted">Chưa có dữ liệu</td></tr>
+                  <tr><td colSpan="5" className="text-center py-4 text-muted">Chưa có dữ liệu</td></tr>
                 ) : (
                   registrations.map(r => (
                     <tr key={r.id}>
                       <td>{r.course?.courseName}</td>
                       <td style={{ textAlign: 'center' }}>{r.course?.credits}</td>
+                      <td style={{ textAlign: 'center' }}>{r.score ?? 'Chưa nhập'}</td>
                       <td style={{ textAlign: 'center', fontWeight: 'bold', color: r.letterGrade ? '#10b981' : 'var(--text-muted)' }}>
                         {r.letterGrade || '--'}
                       </td>
+                      <td style={{ textAlign: 'center' }}>{r.gradePoint ?? '--'}</td>
                     </tr>
                   ))
                 )}

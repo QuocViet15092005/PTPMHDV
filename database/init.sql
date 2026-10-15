@@ -86,7 +86,9 @@ CREATE TABLE `registrations` (
     `student_id` BIGINT NOT NULL,
     `course_id` BIGINT NOT NULL,
     `registered_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `status` VARCHAR(20) DEFAULT 'ACTIVE'
+    `status` VARCHAR(20) DEFAULT 'ACTIVE',
+    `letter_grade` VARCHAR(5) NULL,
+    `score` DECIMAL(3,1) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Index to optimize querying student registrations

@@ -19,6 +19,7 @@ import Finance from '../pages/Finance';
 import AdminNews from '../pages/admin/AdminNews';
 import AdminFinance from '../pages/admin/AdminFinance';
 import AdminStudents from '../pages/admin/AdminStudents';
+import AdminGrades from '../pages/admin/AdminGrades';
 
 const PrivateRoute = ({ children, roles }) => {
   const { user, loading } = useAuth();
@@ -80,6 +81,11 @@ const AppRoutes = () => {
         } />
 
         {/* Admin Routes */}
+        <Route path="/admin/grades" element={
+          <PrivateRoute roles={['ADMIN']}>
+            <AdminGrades />
+          </PrivateRoute>
+        } />
         <Route path="/admin/courses" element={
           <PrivateRoute roles={['ADMIN']}>
             <AdminCourses />

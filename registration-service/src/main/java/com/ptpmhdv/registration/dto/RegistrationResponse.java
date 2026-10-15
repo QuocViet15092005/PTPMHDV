@@ -21,6 +21,8 @@ public class RegistrationResponse {
     private LocalDateTime registeredAt;
     private RegistrationStatus status;
     private String letterGrade;
+    private java.math.BigDecimal score;
+    private Double gradePoint;
 
     // Chi tiết bổ sung được làm giàu từ các service khác (nếu có)
     private StudentDTO student;

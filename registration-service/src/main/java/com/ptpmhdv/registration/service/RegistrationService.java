@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 @Service
@@ -128,6 +129,9 @@ public class RegistrationService {
         if (registration.getStatus() == RegistrationStatus.CANCELLED) {
             throw new BadRequestException("Học phần này đã được hủy trước đó!");
         }
+        if (registration.getLetterGrade() != null || registration.getScore() != null) {
+            throw new BadRequestException("Học phần đã có điểm không thể hủy đăng ký");
+        }
 
         // 2. Chuyển trạng thái đăng ký sang CANCELLED
         registration.setStatus(RegistrationStatus.CANCELLED);
@@ -163,6 +167,29 @@ public class RegistrationService {
                 .collect(Collectors.toList());
     }
 
+    public List<RegistrationResponse> getGradingRegistrations() {
+        return registrationRepository.findAll().stream()
+                .filter(registration -> registration.getStatus() == RegistrationStatus.ACTIVE)
+                .map(registration -> enrichRegistration(registration, "ADMIN", null))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public RegistrationResponse updateGrade(Long id, BigDecimal score) {
+        if (score == null || score.compareTo(BigDecimal.ZERO) < 0
+                || score.compareTo(BigDecimal.TEN) > 0 || score.stripTrailingZeros().scale() > 1) {
+            throw new BadRequestException("Điểm phải từ 0 đến 10, tối đa một chữ số thập phân");
+        }
+        Registration registration = registrationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đăng ký học phần: " + id));
+        if (registration.getStatus() != RegistrationStatus.ACTIVE) {
+            throw new BadRequestException("Không thể nhập điểm cho học phần đã hủy");
+        }
+        registration.setScore(score);
+        registration.setLetterGrade(GradeScale.letter(score));
+        return enrichRegistration(registrationRepository.save(registration), "ADMIN", null);
+    }
+
     public RegistrationResponse getRegistrationById(Long id) {
         Registration registration = registrationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bản ghi đăng ký với ID: " + id));
@@ -176,11 +203,15 @@ public class RegistrationService {
     }
 
     private RegistrationResponse enrichRegistration(Registration registration) {
+        return enrichRegistration(registration, null, null);
+    }
+
+    private RegistrationResponse enrichRegistration(Registration registration, String role, String username) {
         StudentDTO student = null;
         CourseDTO course = null;
 
         try {
-            student = studentClient.getStudentById(registration.getStudentId());
+            student = studentClient.getStudentById(registration.getStudentId(), role, username);
         } catch (Exception e) {
             log.warn("Không thể tải thông tin sinh viên ID={}: {}", registration.getStudentId(), e.getMessage());
         }
@@ -198,6 +229,8 @@ public class RegistrationService {
                 .registeredAt(registration.getRegisteredAt())
                 .status(registration.getStatus())
                 .letterGrade(registration.getLetterGrade())
+                .score(registration.getScore())
+                .gradePoint(GradeScale.points(registration.getLetterGrade()))
                 .student(student)
                 .course(course)
                 .build();
